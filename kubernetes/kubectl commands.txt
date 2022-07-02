@@ -1,0 +1,1 @@
+kubectl port-forward svc/kube-test 8000:8000

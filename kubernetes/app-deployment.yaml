@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-test-deployment
+  labels:
+    app: kube-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-test
+  template:
+    metadata:
+      labels:
+        app: kube-test
+    spec:
+      containers:
+      - name: kube-test
+        image: rashik07/kube-test:django
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "2"
+          requests:
+            memory: 256Mi
+            cpu: "0.2"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+          - name: DEBUG
+            value: "on"
+          - name: ALLOWED_HOSTS
+            value: '127.0.0.1,localhost'
+          - name: DATABASE_URL
+            value: 'postgres://admin:test123s@kube-test-db:5432/kube-test-db' 

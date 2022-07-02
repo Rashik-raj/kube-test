@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-test-db-deployment
+  labels:
+    app: kube-test-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-test-db
+  template:
+    metadata:
+      labels:
+        app: kube-test-db
+    spec:
+      containers:
+      - name: kube-test-db
+        image: postgres:latest
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "0.2"
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: kube-test-db-config
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: kube-test-db-config
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: kube-test-db-config
+                key: POSTGRES_DB

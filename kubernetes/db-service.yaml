@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-test-db
+  labels:
+    app: kube-test-db
+spec:
+  selector:
+    app: kube-test-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
